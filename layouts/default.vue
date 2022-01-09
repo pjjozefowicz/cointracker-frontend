@@ -35,6 +35,9 @@
       <v-btn icon @click.stop="fixed = !fixed">
         <v-icon>mdi-minus</v-icon>
       </v-btn>
+      <v-btn icon>
+        <v-icon>mdi-cog</v-icon>
+      </v-btn>
       <v-toolbar-title class="mr-2" v-text="title"/>
       <v-spacer/>
       <div v-if="$auth.loggedIn">
@@ -84,9 +87,9 @@ export default {
           to: '/',
         },
         {
-          icon: 'mdi-chart-bubble',
-          title: 'Inspire',
-          to: '/inspire',
+          icon: 'mdi-format-list-bulleted-square',
+          title: 'Transactions',
+          to: '/transactions',
         },
       ],
       miniVariant: false,
