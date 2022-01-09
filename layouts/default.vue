@@ -79,8 +79,8 @@ export default {
       fixed: false,
       items: [
         {
-          icon: 'mdi-apps',
-          title: 'Welcome',
+          icon: 'mdi-view-dashboard',
+          title: 'Dashboard',
           to: '/',
         },
         {
