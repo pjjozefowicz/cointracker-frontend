@@ -35,11 +35,9 @@
       <v-btn icon @click.stop="fixed = !fixed">
         <v-icon>mdi-minus</v-icon>
       </v-btn>
-      <v-btn icon>
-        <v-icon>mdi-cog</v-icon>
-      </v-btn>
-      <v-toolbar-title class="mr-2" v-text="title"/>
-      <v-spacer/>
+      <!-- <v-toolbar-title class="mr-2" v-text="title"/> -->
+      <portfolio-menu />
+      <v-spacer />
       <div v-if="$auth.loggedIn">
         {{ $auth.user.email }}
         <v-btn text @click="logoutUser">Logout</v-btn>
@@ -73,6 +71,7 @@
 </template>
 
 <script>
+import { mapActions, mapGetters } from 'vuex'
 export default {
   name: 'DefaultLayout',
   data() {
@@ -104,7 +103,24 @@ export default {
     },
     async logoutUser() {
       await this.$auth.logout()
+    },
+    ...mapActions('dashboard', [
+      'initDashboard',
+    ]),
+    // ...mapActions([
+    //   'rootTest', 
+    // ]),
+  },
+  computed: {
+    // mix the getters into computed with object spread operator
+    ...mapGetters('dashboard', ['initialized']),
+  },
+  beforeMount() {
+    console.log('Hello, beforeMount() here')
+    if (this.$auth.loggedIn && !this.initialized) {
+      console.log('Portfolios state is not initialized, getting them now...')
+      this.initDashboard()
     }
-  }
+  },
 }
 </script>
