@@ -3,41 +3,41 @@
     <v-row justify="start" align="center">
       <v-col cols="2">
         <v-card class="mx-auto" color="purple">
-          <v-card-title>Card Title</v-card-title>
-          <v-card-text>
-            <div>Word of the Day</div>
+          <v-card-title>Coinname</v-card-title>
+           <v-card-text>
+            <div>Price</div>
           </v-card-text>
         </v-card>
       </v-col>
       <v-col cols="2">
         <v-card class="mx-auto" color="purple">
-          <v-card-title>Card Title</v-card-title>
+          <v-card-title>0 PLN</v-card-title>
           <v-card-text>
-            <div>Word of the Day</div>
+            <div>Holdings Value</div>
           </v-card-text>
         </v-card>
       </v-col>
       <v-col cols="2">
         <v-card class="mx-auto" color="purple">
-          <v-card-title>Card Title</v-card-title>
+          <v-card-title>0</v-card-title>
           <v-card-text>
-            <div>Word of the Day</div>
+            <div>Holdings</div>
           </v-card-text>
         </v-card>
       </v-col>
       <v-col cols="2">
         <v-card class="mx-auto" color="purple">
-          <v-card-title>Card Title</v-card-title>
+          <v-card-title>0</v-card-title>
           <v-card-text>
-            <div>Word of the Day</div>
+            <div> Total Cost </div>
           </v-card-text>
         </v-card>
       </v-col>
       <v-col cols="2">
         <v-card class="mx-auto" color="purple">
-          <v-card-title>Card Title</v-card-title>
+          <v-card-title>0 PLN</v-card-title>
           <v-card-text>
-            <div>Word of the Day</div>
+            <div>Profit / Loss</div>
           </v-card-text>
         </v-card>
       </v-col>

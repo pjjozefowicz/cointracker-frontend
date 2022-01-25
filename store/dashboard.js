@@ -53,7 +53,7 @@ export const mutations = {
     console.log(balances)
   },
   addBalance(state, balance) {
-    state.balance.push(balance)
+    state.balances.push(balance)
   },
   removeBalance(state, balance) {
     state.balances.splice(state.balances.indexOf(balance), 1)
@@ -270,8 +270,8 @@ export const actions = {
         portfolio_id: state.selectedPortfolio.portfolio_id,
         currency_id: crypto.cryptocurrency_id,
       })
-      console.log(response.data)
-      commit('addBalance', response.data)
+      console.log(response.data.balance)
+      commit('addBalance', response.data.balance)
     } catch (error) {
       console.error(error)
     }
@@ -368,7 +368,7 @@ export const getters = {
           '7d': roundNumber(rate.pln_7d),
           market_cap: roundNumber(rate.market_cap),
           holdings: b.amount,
-          pnl: 'wewe??',
+          pnl: 'pnl',
         })
       }
     })

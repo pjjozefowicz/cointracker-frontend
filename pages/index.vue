@@ -3,25 +3,25 @@
     <v-row justify="start" align="center">
       <v-col cols="2">
         <v-card class="mx-auto" color="purple">
-          <v-card-title>Card Title</v-card-title>
+          <v-card-title>0 PLN</v-card-title>
           <v-card-text>
-            <div>Word of the Day</div>
+            <div>Total Balance</div>
           </v-card-text>
         </v-card>
       </v-col>
       <v-col cols="2">
         <v-card class="mx-auto" color="purple">
-          <v-card-title>Card Title</v-card-title>
+          <v-card-title>0%</v-card-title>
           <v-card-text>
-            <div>Word of the Day</div>
+            <div>24h Portfolio Change</div>
           </v-card-text>
         </v-card>
       </v-col>
       <v-col cols="2">
         <v-card class="mx-auto" color="purple">
-          <v-card-title>Card Title</v-card-title>
+          <v-card-title>0 PLN</v-card-title>
           <v-card-text>
-            <div>Word of the Day</div>
+            <div>Total Profit Loss</div>
           </v-card-text>
         </v-card>
       </v-col>
