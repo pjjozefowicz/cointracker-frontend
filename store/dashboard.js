@@ -1,50 +1,15 @@
 export const state = () => ({
-  portfolios: [],
   balances: [],
   rates: [],
   cryptos: [],
   history: {},
   transactions: [],
   initialized: false,
-  selectedPortfolio: {
-    portfolio_id: '',
-    name: '',
-    owner_id: '',
-    is_main: false,
-    createdAt: '',
-    updatedAt: '',
-  },
 })
 
 export const mutations = {
   setInitialized(state, val) {
     state.initialized = val
-  },
-  setPortfolios(state, portfolios) {
-    portfolios.forEach((p) => {
-      state.portfolios.push(p)
-    })
-    console.log(portfolios)
-  },
-  addPortfolio(state, portfolio) {
-    state.portfolios.push(portfolio)
-  },
-  removePortfolio(state, portfolio) {
-    state.portfolios.splice(state.portfolios.indexOf(portfolio), 1)
-  },
-  updatePortfolio(state, portfolio) {
-    for (let obj of state.portfolios) {
-      if (obj.id === portfolio.portfolio_id) {
-        obj = { ...portfolio }
-        break
-      }
-    }
-  },
-  setSelectedPortfolio(state, portfolio) {
-    state.balances.length = 0
-    state.rates.length = 0
-    for (const member in state.history) delete state.history[member]
-    state.selectedPortfolio = { ...portfolio }
   },
   setBalances(state, balances) {
     balances.forEach((p) => {
@@ -185,57 +150,6 @@ export const actions = {
     try {
       const response = await this.$axios.get(`/assets/history?coins=${coins}`)
       commit('setHistory', response.data)
-    } catch (error) {
-      console.error(error)
-    }
-  },
-  setPortfolio({ commit, dispatch }, portfolio) {
-    commit('setSelectedPortfolio', portfolio)
-    dispatch('getBalance', portfolio.portfolio_id)
-  },
-  async createPortfolio({ commit, rootState }, name) {
-    try {
-      const response = await this.$axios.post(`/account/portfolio`, {
-        name,
-        owner_id: rootState.auth.user.sub,
-        is_main: false,
-      })
-      commit('addPortfolio', response.data.portfolio)
-      commit('setSelectedPortfolio', response.data.portfolio)
-    } catch (error) {
-      console.error(error)
-    }
-  },
-  async deletePortfolio({ commit, dispatch, state }, name) {
-    try {
-      const portfolios = state.portfolios
-      const target = portfolios.find((p) => {
-        return p.name === name
-      })
-      await this.$axios.delete(`/account/portfolio/${target.portfolio_id}`)
-      commit('removePortfolio', target)
-      dispatch('loadMainPortfolio')
-    } catch (error) {
-      console.error(error)
-    }
-  },
-  async editPortfolio({ commit, dispatch, state }, obj) {
-    console.log(
-      `current name: ${obj.currentName} new name: ${obj.name}, porfliosls: ${state.portfolios}`
-    )
-    try {
-      const portfolios = state.portfolios
-      const target = portfolios.find((p) => {
-        return p.name === obj.currentName
-      })
-      await this.$axios.put(`/account/portfolio/${target.portfolio_id}`, {
-        name: obj.name,
-      })
-      commit('removePortfolio', target)
-      const updatedPortfolio = { ...target }
-      updatedPortfolio.name = obj.name
-      commit('addPortfolio', updatedPortfolio)
-      commit('setSelectedPortfolio', updatedPortfolio)
     } catch (error) {
       console.error(error)
     }

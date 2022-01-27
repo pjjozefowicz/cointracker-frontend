@@ -104,22 +104,21 @@ export default {
     async logoutUser() {
       await this.$auth.logout()
     },
-    ...mapActions('dashboard', [
-      'initDashboard',
+    ...mapActions('portfolios', [
+      'setPortfolios',
     ]),
     // ...mapActions([
     //   'rootTest', 
     // ]),
   },
   computed: {
-    // mix the getters into computed with object spread operator
-    ...mapGetters('dashboard', ['initialized']),
+    ...mapGetters(['initialized']),
   },
   beforeMount() {
     console.log('Hello, beforeMount() here')
     if (this.$auth.loggedIn && !this.initialized) {
       console.log('Portfolios state is not initialized, getting them now...')
-      this.initDashboard()
+      this.setPortfolios()
     }
   },
 }

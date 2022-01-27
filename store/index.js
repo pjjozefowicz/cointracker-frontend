@@ -9,8 +9,8 @@ export const mutations = {
 }
 
 export const actions = {
-    setInitialized({commit}) {
-        commit('setInitialized', true)
+    setInitialized({commit}, val) {
+        commit('setInitialized', val)
     }
 }
 
