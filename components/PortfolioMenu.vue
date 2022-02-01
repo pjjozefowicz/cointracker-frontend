@@ -10,7 +10,7 @@
       <v-card class="mx-auto" max-width="300" tile>
         <v-card-title>{{ selectedPortfolio.name }}</v-card-title>
         <v-list>
-          <v-list-item-group>
+          <v-list-item-group color="purple">
             <v-list-item v-if="!selectedPortfolio.is_main" @click="setMain()">
               <v-list-item-icon class="mr-3">
                 <v-icon> mdi-star </v-icon>
@@ -204,6 +204,7 @@ export default {
     saveEdit() {
       this.editPortfolio({ ...this.selectedPortfolio, name: this.editName })
       this.closeEdit()
+      this.settingsMenu = false
     },
 
     closeCreate() {
@@ -215,7 +216,7 @@ export default {
 
     saveCreate() {
       this.createPortfolio(this.createName)
-      this.createClose()
+      this.closeCreate()
       this.listMenu = false
     },
 
@@ -226,6 +227,7 @@ export default {
 
     setMain() {
       this.setMainPortfolio(this.selectedPortfolio)
+      this.settingsMenu = false
     },
     ...mapActions('portfolios', [
       'setSelectedPortfolio',
@@ -240,3 +242,11 @@ export default {
   },
 }
 </script>
+
+<style scoped>
+
+.tile {
+  background-color: purple !important;
+  opacity: 0.5 !important;
+}
+</style>

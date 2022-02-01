@@ -21,7 +21,7 @@ export default {
   css: [],
 
   // Plugins to run before rendering page: https://go.nuxtjs.dev/config-plugins
-  plugins: [{src:'~/plugins/vue-cryptocoin.js', mode: 'client'}],
+  plugins: [{ src: '~/plugins/vue-cryptocoin.js', mode: 'client' }],
 
   // Auto import components: https://go.nuxtjs.dev/config-components
   components: true,
@@ -38,7 +38,7 @@ export default {
   modules: [
     // https://go.nuxtjs.dev/axios
     '@nuxtjs/axios',
-    '@nuxtjs/auth-next'
+    '@nuxtjs/auth-next',
   ],
 
   // Axios module configuration: https://go.nuxtjs.dev/config-axios
@@ -68,7 +68,12 @@ export default {
 
   // Build Configuration: https://go.nuxtjs.dev/config-build
   build: {
-    transpile: ['vue-cryptocoin']
+    transpile: ['vue-cryptocoin'],
+    extend(config, ctx) {
+      if (ctx.isDev) {
+        config.devtool = ctx.isClient ? 'source-map' : 'inline-source-map'
+      }
+    },
   },
 
   auth: {
@@ -79,13 +84,12 @@ export default {
         audience: 'https://cointracker.eu.auth0.com/api/v2/',
         logoutRedirectUri: 'http://localhost:3000',
         callback: 'http://localhost:3000',
-        home: '/'
-      }
-    }
+        home: '/',
+      },
+    },
   },
 
   router: {
-    middleware: ['auth']
-  }
-  
+    middleware: ['auth'],
+  },
 }

@@ -21,21 +21,21 @@ export const mutations = {
     state.portfolios.splice(state.portfolios.indexOf(portfolio), 1)
   },
   updatePortfolio(state, portfolio) {
-    for (let obj of state.portfolios) {
-      if (obj.id === portfolio.portfolio_id) {
-        obj = { ...portfolio }
+    for (const obj of state.portfolios) {
+      if (obj.portfolio_id === portfolio.portfolio_id) {
+        Object.assign(obj, portfolio)
         break
       }
     }
   },
   setSelectedPortfolio(state, portfolio) {
-    state.selectedPortfolio = { ...portfolio }
+    state.selectedPortfolio = portfolio 
   },
-  changeMainPortfolio(state, portfolio) {
+  changeMainPortfolio({ commit, state }, portfolio) {
     const old_main = state.portfolios.find(p => p.is_main)
-    old_main = {...old_main, isMain: false}
+    commit("updatePortfolio", {...old_main, isMain: false})
     const new_main = state.portfolios.find(p => p.portfolio_id === portfolio.portfolio_id)
-    new_main = {...new_main, isMain: true}
+    commit("updatePortfolio", {...new_main, isMain: true})
   }
 }
 
@@ -93,10 +93,14 @@ export const actions = {
       console.error(error)
     }
   },
-  async setMainPortfolio({ commit }, portfolio) {
+  async setMainPortfolio({ commit, state }, portfolio) {
     try {
-      await this.$axios.post(`/account/set-main-portfolio/${portfolio.portfolio_id}`)
-      commit('changeMainPortfolio', portfolio)
+      await this.$axios.post(`/account/main-portfolio/${portfolio.portfolio_id}`)
+      // commit('changeMainPortfolio', portfolio)
+      const old_main = state.portfolios.find(p => p.is_main)
+      commit("updatePortfolio", {...old_main, is_main: false})
+      const new_main = state.portfolios.find(p => p.portfolio_id === portfolio.portfolio_id)
+      commit("updatePortfolio", {...new_main, is_main: true})
     } catch (error) {
       console.error(error)
     }
