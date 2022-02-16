@@ -1,90 +1,95 @@
 <template>
-  <div>
+  <div class="pa-1">
     <v-card-text>
-      <v-container>
-        <v-row>
-          <v-col>
-            <div class="d-flex justify-end">
-              <v-btn small text @click="total_spent_change"
-                ><v-icon left>mdi-arrow-left-right</v-icon> {{ option_label }}
-              </v-btn>
-            </div>
-            <v-text-field
-              v-if="total_spent"
-              disabled
-              v-model="rate_computed"
-              label="Price per coin"
-              suffix="PLN"
-            ></v-text-field>
-            <v-text-field
-              v-else
-              v-model="tx.rate"
-              label="Price per coin"
-              suffix="PLN"
-            ></v-text-field>
-          </v-col>
-        </v-row>
-        <v-row>
-          <v-col>
-            <v-text-field
-              v-model="tx.amount"
-              label="Amount"
-              :suffix="balance.coin_code"
-            >
-            </v-text-field>
-          </v-col>
-        </v-row>
-        <v-row>
-          <v-col>
-            <v-text-field
-              v-if="total_spent"
-              v-model="tx.total_spent"
-              label="Total spent"
-              suffix="PLN"
-            ></v-text-field>
-            <v-text-field
-              v-else
-              disabled
-              v-model="total_spent_computed"
-              label="Total spent"
-              suffix="PLN"
-            ></v-text-field>
-          </v-col>
-        </v-row>
-        <v-row>
-          <v-col>
-            <v-menu
-              v-model="dateMenu"
-              :close-on-content-click="false"
-              :nudge-right="40"
-              transition="scale-transition"
-              offset-y
-              min-width="auto"
-            >
-              <template v-slot:activator="{ on, attrs }">
-                <v-text-field
-                  v-model="picker"
-                  label="Date"
-                  prepend-icon="mdi-calendar"
-                  readonly
-                  v-bind="attrs"
-                  v-on="on"
-                ></v-text-field>
-              </template>
-              <v-date-picker
-                no-title
-                v-model="picker"
-                @input="dateMenu = false"
-              ></v-date-picker>
-            </v-menu>
-          </v-col>
-        </v-row>
-        <!-- <v-row>
-            <v-col>
-              <v-text-field v-model="tx.fee" label="Fee"></v-text-field>
-            </v-col>
-          </v-row> -->
-      </v-container>
+      <div class="d-flex justify-end">
+        <v-btn small text @click="total_spent_change"
+          ><v-icon left>mdi-arrow-left-right</v-icon> {{ option_label }}
+        </v-btn>
+      </div>
+      <v-text-field
+        outlined
+        v-if="total_spent"
+        disabled
+        v-model="rate_computed"
+        label="Price per coin"
+        suffix="PLN"
+      ></v-text-field>
+      <v-text-field
+        v-else
+        outlined
+        v-model="tx.rate"
+        label="Price per coin"
+        suffix="PLN"
+      ></v-text-field>
+
+      <v-text-field
+        outlined
+        v-model="tx.amount"
+        label="Amount"
+        :suffix="balance.coin_code"
+      >
+      </v-text-field>
+
+      <v-text-field
+        v-if="total_spent"
+        outlined
+        v-model="tx.total_spent"
+        label="Total spent"
+        suffix="PLN"
+      ></v-text-field>
+      <v-text-field
+        v-else
+        outlined
+        disabled
+        v-model="total_spent_computed"
+        label="Total spent"
+        suffix="PLN"
+      ></v-text-field>
+
+      <v-menu
+        v-model="dateMenu"
+        :close-on-content-click="false"
+        :nudge-right="40"
+        transition="scale-transition"
+        offset-y
+        min-width="auto"
+      >
+        <template v-slot:activator="{ on, attrs }">
+          <v-text-field
+            outlined
+            v-model="picker"
+            label="Date"
+            prepend-inner-icon="mdi-calendar"
+            readonly
+            v-bind="attrs"
+            v-on="on"
+          ></v-text-field>
+        </template>
+        <v-date-picker
+          no-title
+          v-model="picker"
+          @input="dateMenu = false"
+        ></v-date-picker>
+      </v-menu>
+      <v-expand-transition>
+        <div class="" v-show="expand">
+          <v-text-field
+            outlined
+            v-model="tx.fee"
+            label="Fees"
+            suffix="PLN"
+          ></v-text-field>
+          <v-text-field
+            outlined
+            v-model="tx.notes"
+            label="Notes"
+          ></v-text-field>
+        </div>
+      </v-expand-transition>
+      <v-btn class="" color="primary" x-small text @click="expand = !expand">
+        Fees and notes (optional)
+        <v-icon right>{{ expand ? 'mdi-chevron-up' : 'mdi-chevron-down' }}</v-icon>
+      </v-btn>
     </v-card-text>
     <v-card-actions>
       <v-spacer></v-spacer>
@@ -101,6 +106,7 @@ export default {
     edit: Boolean,
   },
   data: () => ({
+    expand: false,
     dateMenu: false,
     picker: new Date(Date.now() - new Date().getTimezoneOffset() * 60000)
       .toISOString()
@@ -115,6 +121,7 @@ export default {
       type: '',
       date: '',
       fee: 0,
+      notes: '',
     },
   }),
   computed: {
