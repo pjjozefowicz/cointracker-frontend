@@ -107,6 +107,9 @@ export default {
     ...mapActions('portfolios', [
       'setPortfolios',
     ]),
+    ...mapActions('balances', [
+      'getCoins',
+    ]),
     // ...mapActions([
     //   'rootTest', 
     // ]),
@@ -119,6 +122,7 @@ export default {
     if (this.$auth.loggedIn && !this.initialized) {
       console.log('Portfolios state is not initialized, getting them now...')
       this.setPortfolios()
+      this.getCoins()
     }
   },
 }

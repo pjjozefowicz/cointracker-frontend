@@ -9,46 +9,18 @@
       <v-card-title>
         <span class="text-h5">{{ title }}</span>
       </v-card-title>
-      <v-card-text>
-        <v-container>
-          <v-row>
-            <v-col>
-              <v-text-field
-                v-model="tx.rate"
-                label="Price per coin"
-              ></v-text-field>
-            </v-col>
-          </v-row>
-          <v-row>
-            <v-col>
-              <v-text-field v-model="tx.amount" label="Amount"></v-text-field>
-            </v-col>
-          </v-row>
-          <v-row>
-            <v-col>
-              <v-text-field
-                v-model="tx.total_spent"
-                label="Total spent"
-              ></v-text-field>
-            </v-col>
-          </v-row>
-          <v-row>
-            <v-col>
-              <v-text-field v-model="tx.date" label="Date"></v-text-field>
-            </v-col>
-          </v-row>
-          <!-- <v-row>
-            <v-col>
-              <v-text-field v-model="tx.fee" label="Fee"></v-text-field>
-            </v-col>
-          </v-row> -->
-        </v-container>
-      </v-card-text>
-      <v-card-actions>
-        <v-spacer></v-spacer>
-        <v-btn color="blue darken-1" text @click="close"> Cancel </v-btn>
-        <v-btn color="blue darken-1" text @click="save"> Save </v-btn>
-      </v-card-actions>
+      <v-tabs v-model="tab" fixed-tabs>
+        <v-tab>Buy</v-tab>
+        <v-tab>Sell</v-tab>
+      </v-tabs>
+      <v-tabs-items v-model="tab">
+        <v-tab-item>
+          <transaction-content></transaction-content>
+        </v-tab-item>
+        <v-tab-item>
+          <transaction-content></transaction-content>
+        </v-tab-item>
+      </v-tabs-items>
     </v-card>
   </v-dialog>
 </template>
@@ -61,6 +33,7 @@ export default {
   data: () => ({
     dialog: false,
     dialogDelete: false,
+    tab: null,
     tx: {
       rate: 0,
       amount: 0,

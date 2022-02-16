@@ -1,7 +1,7 @@
 <template>
   <v-data-table
     :headers="headers"
-    :items="tableData"
+    :items="balances"
     sort-by="calories"
     class="elevation-1"
     @click:row="handleClick"
@@ -11,36 +11,7 @@
         <v-toolbar-title>Your portfolio</v-toolbar-title>
         <v-divider class="mx-4" inset vertical></v-divider>
         <v-spacer></v-spacer>
-        <v-dialog v-model="addBalanceDialog" max-width="500px">
-          <template #activator="{ on, attrs }">
-            <v-btn color="primary" dark class="mb-2" v-bind="attrs" v-on="on">
-              Add new coin
-            </v-btn>
-          </template>
-          <v-card>
-            <v-card-title>
-              <span class="text-h5">Add new coin</span>
-            </v-card-title>
-
-            <v-card-text>
-              <v-select
-                v-model="newCoin"
-                :items="selectCoins"
-                label="coins"
-              ></v-select>
-            </v-card-text>
-
-            <v-card-actions>
-              <v-spacer></v-spacer>
-              <v-btn color="blue darken-1" text @click="closeAddBalance">
-                Cancel
-              </v-btn>
-              <v-btn color="blue darken-1" text @click="saveAddBalance">
-                Save
-              </v-btn>
-            </v-card-actions>
-          </v-card>
-        </v-dialog>
+        <add-coin></add-coin>
         <v-dialog v-model="dialogDelete" max-width="500px">
           <v-card>
             <v-card-title class="text-h5"
@@ -48,30 +19,79 @@
             >
             <v-card-actions>
               <v-spacer></v-spacer>
-              <v-btn color="blue darken-1" text @click="closeDelete"
-                >Cancel</v-btn
-              >
-              <v-btn color="blue darken-1" text @click="deleteItemConfirm"
-                >OK</v-btn
-              >
+              <v-btn color="blue darken-1" text @click="null">Cancel</v-btn>
+              <v-btn color="blue darken-1" text @click="null">OK</v-btn>
               <v-spacer></v-spacer>
             </v-card-actions>
           </v-card>
         </v-dialog>
       </v-toolbar>
     </template>
-    <template #[`item.7d_chart`]="{}">
-      <Sparkline height="100%" />
+    <template #[`item.coin_current_price`]="{ item }">
+      <td>
+        {{ item.coin_current_price + ' ' + currency }}
+      </td>
     </template>
-    <template #[`item.actions`]="{ item }">
-      <v-icon small class="mr-2" @click="editItem(item)"> mdi-plus-box </v-icon>
-      <v-icon small class="mr-2" @click="editItem(item)">
-        mdi-format-list-bulleted-square
-      </v-icon>
-      <!-- <v-icon small  @click="deleteItem(item)"> mdi-delete </v-icon> -->
+    <template #[`item.coin_price_change_1h`]="{ item }">
+      <td :class="item.coin_price_change_1h < 0 ? 'red--text' : 'green--text'">
+        {{ item.coin_price_change_1h }}%
+      </td>
+    </template>
+    <template #[`item.coin_price_change_24h`]="{ item }">
+      <td :class="item.coin_price_change_24h < 0 ? 'red--text' : 'green--text'">
+        {{ item.coin_price_change_24h }}%
+      </td>
+    </template>
+    <template #[`item.coin_price_change_7d`]="{ item }">
+      <td :class="item.coin_price_change_7d < 0 ? 'red--text' : 'green--text'">
+        {{ item.coin_price_change_7d }}%
+      </td>
+    </template>
+    <template #[`item.coin_market_cap`]="{ item }">
+      <td>
+        {{ item.coin_market_cap + ' ' + currency }}
+      </td>
+    </template>
+    <template #[`item.holdings`]="{ item }">
+      <td>
+        <div class="d-flex flex-column">
+          <p>
+            {{
+              `${item.balance_current_value} ${currency} (${item.balance_prc_of_total})%`
+            }}
+          </p>
+          <p>{{ item.balance_amount + ' ' + item.coin_code }}</p>
+        </div>
+      </td>
+    </template>
+    <template #[`item.pnl`]="{ item }">
+      <td>
+        <div class="d-flex flex-column">
+          <p>{{ `${item.balance_pnl} ${currency}` }}</p>
+          <p :class="item.pnl_prc_change < 0 ? 'red--text' : 'green--text'">
+            {{ item.pnl_prc_change + '%' }}
+          </p>
+        </div>
+      </td>
+    </template>
+    <template #[`item.coin_name`]="{ item }">
+      <div class="d-flex align-center">
+        <v-avatar size="36">
+          <v-img :src="item.coin_image_url"></v-img>
+        </v-avatar>
+        <p class="ml-3 mb-0">{{ item.coin_name }}</p>
+        <p class="ml-3 mb-0 grey--text">{{ item.coin_code }}</p>
+      </div>
+    </template>
+    <template #[`item.coin_sparkline`]="{ item }">
+      <Sparkline height="100%" :data="item.coin_sparkline" />
+    </template>
+    <template #[`item.actions`]="{}">
+      <v-icon small class="mr-2"> mdi-plus-box </v-icon>
+      <v-icon small class="mr-2"> mdi-format-list-bulleted-square </v-icon>
     </template>
     <template #no-data>
-      <v-btn color="primary" @click="initialize"> Reset </v-btn>
+      <v-btn color="primary"> There ain't no data </v-btn>
     </template>
   </v-data-table>
 </template>
@@ -83,123 +103,36 @@ export default {
     addBalanceDialog: false,
     dialogDelete: false,
     newCoin: '',
+    currency: 'PLN',
     headers: [
       {
         text: 'Coin',
         align: 'start',
         sortable: false,
-        value: 'name',
+        value: 'coin_name',
       },
-      { text: 'Price', value: 'price' },
-      { text: '1h', value: '1h' },
-      { text: '24h', value: '24h' },
-      { text: '7d', value: '7d' },
-      { text: 'Market cap', value: 'market_cap' },
-      { text: 'Last 7 days', value: '7d_chart' },
+      { text: 'Price', value: 'coin_current_price' },
+      { text: '1h', value: 'coin_price_change_1h' },
+      { text: '24h', value: 'coin_price_change_24h' },
+      { text: '7d', value: 'coin_price_change_7d' },
+      { text: 'Market cap', value: 'coin_market_cap' },
+      { text: 'Last 7 days', value: 'coin_sparkline' },
       { text: 'Holdings', value: 'holdings' },
       { text: 'PNL', value: 'pnl' },
       { text: 'Actions', value: 'actions', sortable: false },
     ],
-    desserts: [],
-    editedIndex: -1,
-    editedItem: {
-      name: '',
-      calories: 0,
-      fat: 0,
-      carbs: 0,
-      protein: 0,
-    },
-    defaultItem: {
-      name: '',
-      calories: 0,
-      fat: 0,
-      carbs: 0,
-      protein: 0,
-    },
   }),
 
-  watch: {
-    dialog(val) {
-      val || this.close()
-    },
-    dialogDelete(val) {
-      val || this.closeDelete()
-    },
-  },
-
-  created() {
-    this.initialize()
-  },
-
   methods: {
-    ...mapActions('dashboard', [
-      'setPortfolio',
-      'createPortfolio',
-      'deletePortfolio',
-      'editPortfolio',
-      'addCryptoToBalance',
-      'getTransactions'
-    ]),
+    ...mapActions('transactions', ['initTransactionsForBalance']),
 
     handleClick(value) {
-      this.getTransactions(value.cryptocurrency_id)
-      this.$router.push({
-        path: `/transactions/`,
-      })
-    },
 
-    initialize() {
-      this.desserts = []
-    },
-
-    closeAddBalance() {
-      this.addBalanceDialog = false
-    },
-    saveAddBalance() {
-      this.addCryptoToBalance(this.newCoin)
-      this.addBalanceDialog = false
-    },
-
-    editItem(item) {
-      this.editedIndex = this.desserts.indexOf(item)
-      this.editedItem = Object.assign({}, item)
-      this.dialog = true
-    },
-
-    deleteItem(item) {
-      this.editedIndex = this.desserts.indexOf(item)
-      this.editedItem = Object.assign({}, item)
-      this.dialogDelete = true
-    },
-
-    deleteItemConfirm() {
-      this.desserts.splice(this.editedIndex, 1)
-      this.closeDelete()
-    },
-
-    close() {
-      this.dialog = false
-      this.$nextTick(() => {
-        this.editedItem = Object.assign({}, this.defaultItem)
-        this.editedIndex = -1
-      })
-    },
-
-    closeDelete() {
-      this.dialogDelete = false
-      this.$nextTick(() => {
-        this.editedItem = Object.assign({}, this.defaultItem)
-        this.editedIndex = -1
-      })
-    },
-
-    save() {
-      if (this.editedIndex > -1) {
-        Object.assign(this.desserts[this.editedIndex], this.editedItem)
-      } else {
-        this.desserts.push(this.editedItem)
-      }
-      this.close()
+      this.initTransactionsForBalance(value.balance_id).finally((_) =>
+        this.$router.push({
+          path: `/transactions/`,
+        })
+      )
     },
   },
   computed: {
@@ -207,7 +140,7 @@ export default {
       return this.editedIndex === -1 ? 'New Item' : 'Edit Item'
     },
     // mix the getters into computed with object spread operator
-    ...mapGetters('dashboard', ['tableData', 'selectCoins']),
+    ...mapGetters('balances', ['balances']),
   },
 }
 </script>

@@ -18,10 +18,10 @@
             >
             <v-card-actions>
               <v-spacer></v-spacer>
-              <v-btn color="blue darken-1" text @click="closeDelete"
+              <v-btn color="blue darken-1" text
                 >Cancel</v-btn
               >
-              <v-btn color="blue darken-1" text @click="deleteItemConfirm"
+              <v-btn color="blue darken-1" text
                 >OK</v-btn
               >
               <v-spacer></v-spacer>
@@ -30,16 +30,13 @@
         </v-dialog>
       </v-toolbar>
     </template>
-    <template #[`item.7d_chart`]="{}">
-      <Sparkline height="100%" />
-    </template>
     <template #[`item.actions`]="{ item }">
       <v-icon small class="mr-2" @click="editItem(item)"> mdi-pencil </v-icon>
       <v-icon small class="mr-2" @click="editItem(item)"> mdi-delete </v-icon>
       <!-- <v-icon small  @click="deleteItem(item)"> mdi-delete </v-icon> -->
     </template>
     <template #no-data>
-      <v-btn color="primary" @click="initialize"> Reset </v-btn>
+      <v-btn color="primary"> No transactions yet </v-btn>
     </template>
   </v-data-table>
 </template>
@@ -50,15 +47,7 @@ import TransactionDialog from './TransactionDialog.vue'
 export default {
   components: { TransactionDialog },
   data: () => ({
-    dialog: false,
-    dialogDelete: false,
     headers: [
-      {
-        text: 'Coin',
-        align: 'start',
-        sortable: false,
-        value: 'name',
-      },
       { text: 'Type', value: 'type' },
       { text: 'Price', value: 'rate' },
       { text: 'Quantity', value: 'amount' },
@@ -69,100 +58,15 @@ export default {
       { text: 'Notes', value: 'note' },
       { text: 'Actions', value: 'actions', sortable: false },
     ],
-    desserts: [],
-    editedIndex: -1,
-    editedItem: {
-      name: '',
-      calories: 0,
-      fat: 0,
-      carbs: 0,
-      protein: 0,
-    },
-    defaultItem: {
-      name: '',
-      calories: 0,
-      fat: 0,
-      carbs: 0,
-      protein: 0,
-    },
+    dialogDelete: false
   }),
 
   computed: {
-    formTitle() {
-      return this.editedIndex === -1 ? 'New Item' : 'Edit Item'
-    },
-    // mix the getters into computed with object spread operator
     ...mapGetters('dashboard', ['transactions']),
   },
 
-  watch: {
-    dialog(val) {
-      val || this.close()
-    },
-    dialogDelete(val) {
-      val || this.closeDelete()
-    },
-  },
-
-  created() {
-    this.initialize()
-  },
-
   methods: {
-    initialize() {
-      this.desserts = []
-    },
-
-    ...mapActions('dashboard', [
-      'setPortfolio',
-      'createPortfolio',
-      'deletePortfolio',
-      'editPortfolio',
-      'addCryptoToBalance',
-      'getTransactions'
-    ]),
-
-    editItem(item) {
-      this.editedIndex = this.desserts.indexOf(item)
-      this.editedItem = Object.assign({}, item)
-      this.dialog = true
-    },
-
-    deleteItem(item) {
-      this.editedIndex = this.desserts.indexOf(item)
-      this.editedItem = Object.assign({}, item)
-      this.dialogDelete = true
-    },
-
-    deleteItemConfirm() {
-      this.desserts.splice(this.editedIndex, 1)
-      this.closeDelete()
-    },
-
-    close() {
-      this.dialog = false
-      this.$nextTick(() => {
-        this.editedItem = Object.assign({}, this.defaultItem)
-        this.editedIndex = -1
-      })
-    },
-
-    closeDelete() {
-      this.dialogDelete = false
-      this.$nextTick(() => {
-        this.editedItem = Object.assign({}, this.defaultItem)
-        this.editedIndex = -1
-      })
-    },
-
-    save() {
-      if (this.editedIndex > -1) {
-        Object.assign(this.desserts[this.editedIndex], this.editedItem)
-      } else {
-        this.desserts.push(this.editedItem)
-      }
-      this.close()
-    },
+    ...mapActions()
   },
 }
 </script>

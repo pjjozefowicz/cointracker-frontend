@@ -42,7 +42,7 @@ export const mutations = {
 export const actions = {
   setSelectedPortfolio({ commit, dispatch }, portfolio) {
     commit('setSelectedPortfolio', portfolio)
-    // setDashboard
+    dispatch('balances/getBalancesForPortfolio', portfolio.portfolio_id, {root:true})
   },
   selectMainPortfolio({ dispatch, state }) {
     const main = state.portfolios.find((p) => p.is_main)
