@@ -10,42 +10,50 @@
         <v-toolbar-title>Your transactions</v-toolbar-title>
         <v-divider class="mx-4" inset vertical></v-divider>
         <v-spacer></v-spacer>
-        <transaction-dialog :edit="false"/>
-        <v-dialog v-model="dialogDelete" max-width="500px">
-          <v-card>
-            <v-card-title class="text-h5"
-              >Are you sure you want to delete this item?</v-card-title
-            >
-            <v-card-actions>
-              <v-spacer></v-spacer>
-              <v-btn color="blue darken-1" text
-                >Cancel</v-btn
-              >
-              <v-btn color="blue darken-1" text
-                >OK</v-btn
-              >
-              <v-spacer></v-spacer>
-            </v-card-actions>
-          </v-card>
-        </v-dialog>
+        <tx-create-dialog/>
       </v-toolbar>
     </template>
     <template #[`item.actions`]="{ item }">
-      <v-icon small class="mr-2" @click="editItem(item)"> mdi-pencil </v-icon>
-      <v-icon small class="mr-2" @click="editItem(item)"> mdi-delete </v-icon>
-      <!-- <v-icon small  @click="deleteItem(item)"> mdi-delete </v-icon> -->
+      <tx-edit-dialog :tx="{...item}"/>
+      <tx-delete-dialog :tx="item"/>
     </template>
     <template #no-data>
-      <v-btn color="primary"> No transactions yet </v-btn>
+      <v-card> No transactions yet </v-card>
+    </template>
+    <template #[`item.date`]="{ item }">
+      <td>{{ new Date(item.date).toLocaleString('pl-PL') }}</td>
+    </template>
+    <template #[`item.type`]="{ item }">
+      <td :class="item.type === 'Buy' ? 'green--text' : 'red--text'">
+        {{ item.type }}
+      </td>
+    </template>
+    <template #[`item.pnl`]="{ item }">
+      <td :class="item.pnl < 0 ? 'red--text': 'green--text'">
+        {{ `${item.pnl}%` }}
+      </td>
+    </template>
+    <template #[`item.rate`]="{ item }">
+      <td>
+        {{ `${item.rate} ${currency}` }}
+      </td>
+    </template>
+     <template #[`item.amount`]="{ item }">
+      <td :class="item.type === 'Buy' ? 'green--text' : 'red--text'">
+        {{ `${item.type === 'Buy' ? '+' : '-'} ${item.amount}` }}
+      </td>
+    </template>
+     <template #[`item.total_spent`]="{ item }">
+      <td>
+        {{ `${item.total_spent} ${currency}` }}
+      </td>
     </template>
   </v-data-table>
 </template>
 
 <script>
-import { mapGetters, mapActions } from 'vuex'
-import TransactionDialog from './TransactionDialog.vue'
+import { mapGetters } from 'vuex'
 export default {
-  components: { TransactionDialog },
   data: () => ({
     headers: [
       { text: 'Type', value: 'type' },
@@ -53,20 +61,17 @@ export default {
       { text: 'Quantity', value: 'amount' },
       { text: 'Date', value: 'date' },
       { text: 'Fees', value: 'fee' },
-      { text: 'Cost', value: 'cost' },
+      { text: 'Cost', value: 'total_spent' },
       { text: 'PNL', value: 'pnl' },
       { text: 'Notes', value: 'note' },
       { text: 'Actions', value: 'actions', sortable: false },
     ],
-    dialogDelete: false
+    currency: 'PLN',
+    dialogDelete: false,
   }),
 
   computed: {
-    ...mapGetters('dashboard', ['transactions']),
-  },
-
-  methods: {
-    ...mapActions()
-  },
+    ...mapGetters('transactions', ['transactions']),
+  }
 }
 </script>
