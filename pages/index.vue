@@ -1,9 +1,11 @@
 <template>
   <div>
     <v-row justify="start" align="center">
-      <v-col cols="12">
+      <v-col xs="12" md="6" lg="4" xl="3" >
         <new-portfolio-menu />
       </v-col>
+    </v-row>
+    <v-row justify="start" align="center">
       <v-col xs="12" sm="6" lg="3" xl="2" >
         <v-card class="mx-auto" outlined>
           <v-card-title>{{ total_balance + ' ' + currency }}</v-card-title>
