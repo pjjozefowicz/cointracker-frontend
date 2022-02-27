@@ -96,7 +96,8 @@ export const getters = {
     })
   },
   total_balance(state) {
-    return state.balances.reduce((total, b) => total + (parseFloat(b.balance_amount) * parseFloat(b.coin_current_price)), 0)
+    const sum = state.balances.reduce((total, b) => total + (parseFloat(b.balance_amount) * parseFloat(b.coin_current_price)), 0)
+    return roundNumber(sum)
   },
   total_pnl(state, getters) {
     const total_balance = getters.total_balance

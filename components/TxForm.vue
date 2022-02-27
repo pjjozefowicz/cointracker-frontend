@@ -114,7 +114,6 @@
               v-model="tx.fee"
               label="Fees"
               suffix="PLN"
-              :rules="feeRules"
               type="number"
               hide-spin-buttons
             ></v-text-field>

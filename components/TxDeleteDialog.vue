@@ -13,7 +13,6 @@
         <v-btn color="blue darken-1" text @click="deleteTx"
           >OK</v-btn
         >
-        <v-spacer></v-spacer>
       </v-card-actions>
     </v-card>
   </v-dialog>

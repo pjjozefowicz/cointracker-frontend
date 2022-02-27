@@ -2,7 +2,7 @@
   <div class="text-center">
     <v-menu v-model="settingsMenu" :close-on-content-click="false" offset-x>
       <template v-slot:activator="{ on, attrs }">
-        <v-btn icon dark v-bind="attrs" v-on="on">
+        <v-btn icon v-bind="attrs" v-on="on">
           <v-icon>mdi-dots-vertical</v-icon>
         </v-btn>
       </template>
@@ -79,9 +79,9 @@
               </template>
               <v-card>
                 <v-card-title>
-                  <span class="text-h5">Delete this portfolio</span>
+                  <span class="text-h5">Delete this portfolio?</span>
                 </v-card-title>
-
+                <v-card-text>You will lose all balances and transactions. This operation is permanent!</v-card-text>
                 <v-card-actions>
                   <v-spacer></v-spacer>
                   <v-btn color="blue darken-1" text @click="closeDelete">
@@ -101,7 +101,7 @@
       <template v-slot:activator="{ on, attrs }">
         <v-btn outlined v-bind="attrs" v-on="on">
           {{ selectedPortfolio.name }}
-          <v-icon right dark> mdi-chevron-down </v-icon>
+          <v-icon right> mdi-chevron-down </v-icon>
         </v-btn>
       </template>
 

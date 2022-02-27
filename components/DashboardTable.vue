@@ -83,7 +83,7 @@
       <balance-delete-dialog :balance="item" />
     </template>
     <template #no-data>
-      <v-btn color="primary"> There ain't no data </v-btn>
+      <p class="mt-4">No balances yet</p>
     </template>
   </v-data-table>
 </template>
