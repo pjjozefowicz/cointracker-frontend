@@ -184,7 +184,7 @@ export default {
     numberRules: [(v) => !!v || 'This field is required'],
     feeRules: [(v) => !!v || 'Invalid input'],
     dateRules: [(v) => !!v || 'This field is required'],
-    noteRules: [(v) => v.length <= 256 || 'Note can have 256 characters max'],
+    noteRules: [(v) => v.length <= 64 || 'Note can have 64 characters max'],
   }),
   computed: {
     option_label() {
