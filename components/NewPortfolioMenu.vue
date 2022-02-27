@@ -8,7 +8,7 @@
     <v-card-actions>
       <v-menu v-model="settingsMenu" :close-on-content-click="false" offset-x>
         <template v-slot:activator="{ on, attrs }">
-          <v-btn v-on="on" v-bind="attrs"
+          <v-btn class="mr-2" v-on="on" v-bind="attrs"
             ><v-icon class="mr-1">mdi-cog</v-icon> Settings</v-btn
           >
         </template>

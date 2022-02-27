@@ -16,7 +16,7 @@ export const mutations = {
         state.transactions.push(tx)
     },
     removeTransaction(state, tx) {
-        state.transactions.splice(state.transactions.indexOf(tx), 1)
+        state.transactions = state.transactions.filter((t) => t.transaction_id !== tx.transaction_id)
     },
     updateTransaction(state, tx) {
         for (const obj of state.transactions) {

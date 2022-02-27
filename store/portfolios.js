@@ -18,7 +18,7 @@ export const mutations = {
     state.portfolios.push(portfolio)
   },
   removePortfolio(state, portfolio) {
-    state.portfolios.splice(state.portfolios.indexOf(portfolio), 1)
+    state.portfolios = state.portfolios.filter((b) => b.portfolio_id !== portfolio.portfolio_id)
   },
   updatePortfolio(state, portfolio) {
     for (const obj of state.portfolios) {

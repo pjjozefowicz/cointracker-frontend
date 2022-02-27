@@ -16,7 +16,7 @@ export const mutations = {
     state.balances.push(balance)
   },
   removeBalance(state, balance) {
-    state.balances.splice(state.balances.indexOf(balance), 1)
+    state.balances = state.balances.filter((b) => b.balance_id !== balance.balance_id)
   },
   updateBalance(state, balance) {
     for (const obj of state.balances) {
@@ -65,7 +65,7 @@ export const actions = {
   async deleteBalance({ commit, rootState }, balance) {
     try {
       const response = await this.$axios.delete(`/account/balance/${balance.balance_id}`)
-      commit('removeBalance', response.data)
+      commit('removeBalance', response.data.balance)
     } catch (error) {
       console.error(error)
     }
