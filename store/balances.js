@@ -88,7 +88,7 @@ export const getters = {
         "coin_price_change_7d": roundNumber(b.coin_price_change_prc_7d),
         "coin_market_cap": numberWithCommas(b.coin_market_cap),
         "coin_sparkline": JSON.parse(b.coin_sparkline),
-        "balance_current_value": current_value,
+        "balance_current_value": roundNumber(current_value),
         "balance_prc_of_total": roundNumber(percent_of_total(current_value, total_balance)),
         "balance_pnl": roundNumber(current_value - parseFloat(b.balance_cost)),
         "pnl_prc_change": roundNumber(percent_change(parseFloat(b.balance_cost), current_value))

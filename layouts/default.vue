@@ -54,7 +54,7 @@
         <v-icon class="mr-2">mdi-view-dashboard</v-icon>
         Dashboard
       </v-btn>
-      <v-divider class="ml-2" vertical></v-divider>
+      <v-divider class="mx-4" inset vertical></v-divider>
       <v-spacer />
       <div v-if="$auth.loggedIn" class="d-flex align-center justify-center">
         <p class="mb-0 mr-2">{{ $auth.user.email }}</p>
