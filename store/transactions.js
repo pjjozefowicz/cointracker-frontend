@@ -27,16 +27,15 @@ export const mutations = {
         }
     },
     updateTxForm(state, val) {
-        console.log("Updating txForm")
-        console.log(val)
         state.txForm = val
     },
 }
 
 export const actions = {
-    initTransactionsForBalance({ commit, dispatch, rootState }, balance_id) {
+    initTransactionsForBalance({ commit, dispatch, rootState }, coin_id) {
+        const balance = rootState.balances.balances.find(x => x.coin_id === coin_id)
+        const balance_id = balance.balance_id
         dispatch("getTransactionsByBalance", balance_id)
-        const balance = rootState.balances.balances.find(x => x.balance_id === balance_id)
         commit("setBalance", balance)
     },
     async getTransactionsByBalance({ commit }, id) {
@@ -51,12 +50,10 @@ export const actions = {
         }
     },
     async addTransaction({ commit }, tx) {
-        console.log(tx)
         try {
             const response = await this.$axios.post(`account/transaction`, {
                 ...tx
             })
-            console.log(response.data)
             commit('addTransaction', response.data.transaction)
             commit("balances/updateBalance", response.data.balance, { root: true })
             commit("setBalance", response.data.balance)
@@ -75,12 +72,10 @@ export const actions = {
         }
     },
     async updateTransaction({ commit }, tx) {
-        console.log(tx)
         try {
             const response = await this.$axios.put(`account/transaction/${tx.transaction_id}`, {
                 ...tx
             })
-            console.log(response.data)
             commit('updateTransaction', response.data.transaction)
             commit("balances/updateBalance", response.data.balance, { root: true })
             commit("setBalance", response.data.balance)
@@ -130,5 +125,6 @@ export const getters = {
             "pnl_prc_change": roundNumber(percent_change(parseFloat(b.balance_cost), current_value)),
             "balance_cost": roundNumber(parseFloat(b.balance_cost))
         }
+
     },
 }

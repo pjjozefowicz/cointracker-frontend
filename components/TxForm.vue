@@ -21,6 +21,9 @@
           v-model="tx.rate"
           label="Price per coin"
           suffix="PLN"
+          :rules="numberRules"
+          type="number"
+          hide-spin-buttons
         ></v-text-field>
 
         <v-text-field
@@ -28,6 +31,9 @@
           v-model="tx.amount"
           label="Amount"
           :suffix="balance.coin_code"
+          :rules="numberRules"
+          type="number"
+          hide-spin-buttons
         >
         </v-text-field>
 
@@ -37,6 +43,9 @@
           v-model="tx.total_spent"
           label="Total spent"
           suffix="PLN"
+          :rules="numberRules"
+          type="number"
+          hide-spin-buttons
         ></v-text-field>
         <v-text-field
           v-else
@@ -64,6 +73,7 @@
               v-bind="attrs"
               v-on="on"
               readonly
+              :rules="dateRules"
             ></v-text-field>
           </template>
           <v-card>
@@ -104,11 +114,15 @@
               v-model="tx.fee"
               label="Fees"
               suffix="PLN"
+              :rules="feeRules"
+              type="number"
+              hide-spin-buttons
             ></v-text-field>
             <v-text-field
               outlined
               v-model="tx.note"
               label="Notes"
+              :rules="noteRules"
             ></v-text-field>
           </div>
         </v-expand-transition>
@@ -139,7 +153,7 @@ export default {
     passedTx: Object,
   },
   data: () => ({
-    valid: false,
+    valid: true,
     expand: false,
     dateTimeMenu: false,
     total_spent: false,
@@ -149,7 +163,7 @@ export default {
     time: new Date(Date.now()).toLocaleTimeString([], {
       hour: '2-digit',
       minute: '2-digit',
-      hour12: false
+      hour12: false,
     }),
     tab: null,
     tx: {
@@ -168,6 +182,10 @@ export default {
       fee: 0,
       note: '',
     },
+    numberRules: [(v) => !!v || 'This field is required'],
+    feeRules: [(v) => !!v || 'Invalid input'],
+    dateRules: [(v) => !!v || 'This field is required'],
+    noteRules: [(v) => v.length <= 256 || 'Note can have 256 characters max'],
   }),
   computed: {
     option_label() {
@@ -248,9 +266,11 @@ export default {
       this.tx = {
         ...this.passedTx,
       }
-      const txDate = new Date(new Date(this.passedTx.date) - new Date().getTimezoneOffset() * 60000).toISOString()
+      const txDate = new Date(
+        new Date(this.passedTx.date) - new Date().getTimezoneOffset() * 60000
+      ).toISOString()
       this.date = txDate.split('T')[0]
-      this.time = txDate.split('T')[1].substring(0,5)
+      this.time = txDate.split('T')[1].substring(0, 5)
     } else {
       this.tx.rate = this.balance.coin_current_price
     }

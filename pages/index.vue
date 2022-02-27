@@ -1,16 +1,19 @@
 <template>
   <div>
     <v-row justify="start" align="center">
-      <v-col cols="2">
-        <v-card class="mx-auto" color="primary">
+      <v-col sm="6" md="6" lg="3" xl="2" cols="12" class="ml-auto" order-md="4">
+        <portfolio-menu />
+      </v-col>
+      <v-col xs="12" sm="6" lg="3" xl="2" order-md="1">
+        <v-card class="mx-auto" outlined>
           <v-card-title>{{ total_balance + ' ' + currency }}</v-card-title>
           <v-card-text>
             <div>Total Balance</div>
           </v-card-text>
         </v-card>
       </v-col>
-      <v-col cols="2">
-        <v-card class="mx-auto" color="primary">
+      <v-col sm="6" md="6" lg="3" xl="2" cols="12" order-md="2">
+        <v-card class="mx-auto" outlined>
           <v-card-title>{{
             `${change_24h.balance_change} ${currency}`
           }}</v-card-title>
@@ -25,8 +28,8 @@
           </v-card-text>
         </v-card>
       </v-col>
-      <v-col cols="2">
-        <v-card class="mx-auto" color="primary">
+      <v-col sm="6" md="6" lg="3" xl="2" cols="12" order-md="3">
+        <v-card class="mx-auto" outlined>
           <v-card-title>{{
             `${total_pnl.balance_change} ${currency}`
           }}</v-card-title>
@@ -41,8 +44,6 @@
           </v-card-text>
         </v-card>
       </v-col>
-      <v-spacer></v-spacer>
-      <portfolio-menu />
     </v-row>
     <v-row justify="center" align="center">
       <v-col cols="12">

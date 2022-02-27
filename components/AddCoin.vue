@@ -1,7 +1,7 @@
 <template>
   <v-dialog v-model="addBalanceDialog" max-width="500px">
     <template #activator="{ on, attrs }">
-      <v-btn color="primary" dark class="mb-2" v-bind="attrs" v-on="on">
+      <v-btn outlined class="mb-2" v-bind="attrs" v-on="on">
         Add new coin
       </v-btn>
     </template>
@@ -20,7 +20,7 @@
           hide-details
           hide-selected
           item-text="name"
-          item-value="code"
+          item-value="coin_id"
           full-width
           label="Search for a coin..."
         >
@@ -103,8 +103,7 @@ export default {
       this.addBalanceDialog = false
     },
     saveAddBalance() {
-      console.log(this.selectedCoin)
-      this.addBalanceToPortfolio(this.selectedCoin.coin_id)
+      this.addBalanceToPortfolio(this.selectedCoin)
       this.addBalanceDialog = false
     },
   },

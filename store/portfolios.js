@@ -56,6 +56,7 @@ export const actions = {
       const portfolios = response.data
       commit('setPortfolios', portfolios)
       dispatch('selectMainPortfolio')
+      commit('setInitialized', true, {root:true})
     } catch (error) {
       console.error(error)
     }

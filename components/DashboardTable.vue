@@ -4,7 +4,6 @@
     :items="balances"
     sort-by="calories"
     class="elevation-1"
-    @click:row="handleClick"
   >
     <template #top>
       <v-toolbar flat>
@@ -12,19 +11,6 @@
         <v-divider class="mx-4" inset vertical></v-divider>
         <v-spacer></v-spacer>
         <add-coin></add-coin>
-        <v-dialog v-model="dialogDelete" max-width="500px">
-          <v-card>
-            <v-card-title class="text-h5"
-              >Are you sure you want to delete this item?</v-card-title
-            >
-            <v-card-actions>
-              <v-spacer></v-spacer>
-              <v-btn color="blue darken-1" text @click="null">Cancel</v-btn>
-              <v-btn color="blue darken-1" text @click="null">OK</v-btn>
-              <v-spacer></v-spacer>
-            </v-card-actions>
-          </v-card>
-        </v-dialog>
       </v-toolbar>
     </template>
     <template #[`item.coin_current_price`]="{ item }">
@@ -57,7 +43,7 @@
         <div class="d-flex flex-column">
           <p class="mb-1 mt-2">
             {{
-              `${item.balance_current_value} ${currency} (${item.balance_prc_of_total})%`
+              `${item.balance_current_value} ${currency} (${item.balance_prc_of_total}%)`
             }}
           </p>
           <p class="mb-2">{{ item.balance_amount + ' ' + item.coin_code }}</p>
@@ -68,7 +54,10 @@
       <td>
         <div class="d-flex flex-column">
           <p class="mb-1 mt-2">{{ `${item.balance_pnl} ${currency}` }}</p>
-          <p class="mb-2" :class="item.pnl_prc_change < 0 ? 'red--text' : 'green--text'">
+          <p
+            class="mb-2"
+            :class="item.pnl_prc_change < 0 ? 'red--text' : 'green--text'"
+          >
             {{ item.pnl_prc_change + '%' }}
           </p>
         </div>
@@ -86,9 +75,12 @@
     <template #[`item.coin_sparkline`]="{ item }">
       <Sparkline height="100%" :data="item.coin_sparkline" />
     </template>
-    <template #[`item.actions`]="{}">
-      <v-icon small class="mr-2"> mdi-plus-box </v-icon>
-      <v-icon small class="mr-2"> mdi-format-list-bulleted-square </v-icon>
+    <template #[`item.actions`]="{ item }">
+      <!-- <v-icon small class="mr-2"> mdi-plus-box </v-icon> -->
+      <v-btn icon :to="`transactions/${item.coin_id}`"
+        ><v-icon small> mdi-format-list-bulleted-square </v-icon></v-btn
+      >
+      <balance-delete-dialog :balance="item" />
     </template>
     <template #no-data>
       <v-btn color="primary"> There ain't no data </v-btn>
@@ -97,8 +89,10 @@
 </template>
 
 <script>
-import { mapGetters, mapActions } from 'vuex'
+import { mapGetters } from 'vuex'
+import BalanceDeleteDialog from './BalanceDeleteDialog.vue'
 export default {
+  components: { BalanceDeleteDialog },
   data: () => ({
     addBalanceDialog: false,
     dialogDelete: false,
@@ -122,24 +116,7 @@ export default {
       { text: 'Actions', value: 'actions', sortable: false },
     ],
   }),
-
-  methods: {
-    ...mapActions('transactions', ['initTransactionsForBalance']),
-
-    handleClick(value) {
-
-      this.initTransactionsForBalance(value.balance_id).finally((_) =>
-        this.$router.push({
-          path: `/transactions/`,
-        })
-      )
-    },
-  },
   computed: {
-    formTitle() {
-      return this.editedIndex === -1 ? 'New Item' : 'Edit Item'
-    },
-    // mix the getters into computed with object spread operator
     ...mapGetters('balances', ['balances']),
   },
 }

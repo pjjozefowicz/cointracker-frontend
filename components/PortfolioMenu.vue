@@ -7,7 +7,7 @@
         </v-btn>
       </template>
 
-      <v-card class="mx-auto" max-width="300" tile>
+      <v-card class="mx-auto" max-width="300">
         <v-card-title>{{ selectedPortfolio.name }}</v-card-title>
         <v-list>
           <v-list-item-group color="purple">

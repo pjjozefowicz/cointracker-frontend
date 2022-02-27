@@ -36,7 +36,6 @@ export const actions = {
       )
       const coins = response.data
       commit('setCoins', coins)
-      console.log("coins fetched")
     } catch (error) {
       console.error(error)
     }
@@ -59,6 +58,14 @@ export const actions = {
         portfolio_id: rootState.portfolios.selectedPortfolio.portfolio_id,
       })
       commit('addBalance', response.data)
+    } catch (error) {
+      console.error(error)
+    }
+  },
+  async deleteBalance({ commit, rootState }, balance) {
+    try {
+      const response = await this.$axios.delete(`/account/balance/${balance.balance_id}`)
+      commit('removeBalance', response.data)
     } catch (error) {
       console.error(error)
     }
@@ -102,8 +109,6 @@ export const getters = {
   change_24h(state, getters) {
     const total_balance = getters.total_balance
     const total_balance_24h_ago = state.balances.reduce((total, b) => total + (parseFloat(b.balance_amount) * number_after_prc_change(parseFloat(b.coin_current_price), -parseFloat(b.coin_price_change_prc_24h))), 0)
-    console.log(total_balance)
-    console.log(total_balance_24h_ago)
     return {
       "balance_change": roundNumber(total_balance - total_balance_24h_ago),
       "prc_change": roundNumber(percent_change(total_balance_24h_ago, total_balance))
