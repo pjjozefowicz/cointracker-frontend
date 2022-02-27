@@ -1,3 +1,5 @@
+import { roundNumber, capitalizeFirstLetter, percent_change, number_after_prc_change } from "~/utils/helpers"
+
 export const state = () => ({
     transactions: [],
     balance: {},
@@ -129,29 +131,4 @@ export const getters = {
             "balance_cost": roundNumber(parseFloat(b.balance_cost))
         }
     },
-}
-
-function roundNumber(num) {
-    num = parseFloat(num)
-    return Math.round((num + Number.EPSILON) * 100) / 100
-}
-
-// function numberWithCommas(x) {
-//     return x.toString().replace(/\B(?=(\d{3})+(?!\d))/g, " ");
-// }
-
-// function percent_of_total(num, total) {
-//     return num / total * 100
-// }
-
-function percent_change(from, to) {
-    return (to - from) / from * 100
-}
-
-function number_after_prc_change(number, prc_change) {
-    return ((prc_change / 100) * number) + number
-}
-
-function capitalizeFirstLetter(string) {
-    return string.charAt(0).toUpperCase() + string.slice(1);
 }

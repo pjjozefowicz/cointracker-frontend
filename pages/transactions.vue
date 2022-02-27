@@ -2,7 +2,7 @@
   <div>
     <v-row justify="start" align="center">
       <v-col>
-        <v-card class="mx-auto" color="purple">
+        <v-card class="mx-auto" color="primary">
           <v-card-title>
             <v-avatar size="36">
               <v-img :src="balance.coin_image_url"></v-img>
@@ -16,7 +16,7 @@
     </v-row>
     <v-row justify="start" align="center">
       <v-col cols="2">
-        <v-card class="mx-auto" color="purple">
+        <v-card class="mx-auto" color="primary">
           <v-card-title>{{ `${balance.balance_current_value} ${currency}` }}</v-card-title>
           <v-card-text>
             <div>Holdings Value</div>
@@ -24,7 +24,7 @@
         </v-card>
       </v-col>
       <v-col cols="2">
-        <v-card class="mx-auto" color="purple">
+        <v-card class="mx-auto" color="primary">
           <v-card-title>{{ `${balance.balance_amount} ${balance.coin_code}` }}</v-card-title>
           <v-card-text>
             <div>Holdings</div>
@@ -32,7 +32,7 @@
         </v-card>
       </v-col>
       <v-col cols="2">
-        <v-card class="mx-auto" color="purple">
+        <v-card class="mx-auto" color="primary">
           <v-card-title>{{ `${balance.balance_cost} ${currency}` }}</v-card-title>
           <v-card-text>
             <div>Total Cost</div>
@@ -40,7 +40,7 @@
         </v-card>
       </v-col>
       <v-col cols="2">
-        <v-card class="mx-auto" color="purple">
+        <v-card class="mx-auto" color="primary">
           <v-card-title>{{ `${balance.balance_pnl} ${currency} ${balance.pnl_prc_change}%` }}</v-card-title>
           <v-card-text>
             <div>Profit / Loss</div>

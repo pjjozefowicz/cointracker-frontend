@@ -99,13 +99,13 @@
     </v-menu>
     <v-menu v-model="listMenu" :close-on-content-click="false" offset-x>
       <template v-slot:activator="{ on, attrs }">
-        <v-btn outlined dark v-bind="attrs" v-on="on">
+        <v-btn outlined v-bind="attrs" v-on="on">
           {{ selectedPortfolio.name }}
           <v-icon right dark> mdi-chevron-down </v-icon>
         </v-btn>
       </template>
 
-      <v-card class="mx-auto" max-width="300" tile>
+      <v-card class="mx-auto" max-width="300">
         <v-card-title>Portfolios</v-card-title>
         <v-list>
           <!-- <v-list-item-group v-model="selectedItem" color="primary"> -->

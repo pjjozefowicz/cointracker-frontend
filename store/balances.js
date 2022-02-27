@@ -1,10 +1,7 @@
+import { roundNumber, numberWithCommas, percent_of_total, percent_change, number_after_prc_change } from "~/utils/helpers"
+
 export const state = () => ({
-  coins: [{
-    id: '',
-    name: '',
-    code: '',
-    image_url: ''
-  }],
+  coins: [],
   balances: []
 })
 
@@ -39,6 +36,7 @@ export const actions = {
       )
       const coins = response.data
       commit('setCoins', coins)
+      console.log("coins fetched")
     } catch (error) {
       console.error(error)
     }
@@ -78,15 +76,15 @@ export const getters = {
       return {
         ...b,
         "coin_code": b.coin_code.toUpperCase(),
-        "coin_price_change_1h": roundNumber(b.coin_price_change_1h),
-        "coin_price_change_24h": roundNumber(b.coin_price_change_24h),
-        "coin_price_change_7d": roundNumber(b.coin_price_change_7d),
+        "coin_price_change_1h": roundNumber(b.coin_price_change_prc_1h),
+        "coin_price_change_24h": roundNumber(b.coin_price_change_prc_24h),
+        "coin_price_change_7d": roundNumber(b.coin_price_change_prc_7d),
         "coin_market_cap": numberWithCommas(b.coin_market_cap),
         "coin_sparkline": JSON.parse(b.coin_sparkline),
         "balance_current_value": current_value,
-        "balance_prc_of_total": percent_of_total(current_value, total_balance),
-        "balance_pnl": current_value - parseFloat(b.balance_cost),
-        "pnl_prc_change": percent_change(parseFloat(b.balance_cost), current_value)
+        "balance_prc_of_total": roundNumber(percent_of_total(current_value, total_balance)),
+        "balance_pnl": roundNumber(current_value - parseFloat(b.balance_cost)),
+        "pnl_prc_change": roundNumber(percent_change(parseFloat(b.balance_cost), current_value))
       }
     })
   },
@@ -97,37 +95,18 @@ export const getters = {
     const total_balance = getters.total_balance
     const total_cost = state.balances.reduce((total, b) => total + parseFloat(b.balance_cost), 0)
     return {
-      "balance_change": total_balance - total_cost,
-      "prc_change": percent_change(total_cost, total_balance)
+      "balance_change": roundNumber(total_balance - total_cost),
+      "prc_change": roundNumber(percent_change(total_cost, total_balance))
     }
   },
   change_24h(state, getters) {
     const total_balance = getters.total_balance
-    const total_balance_24h_ago = state.balances.reduce((total, b) => total + (parseFloat(b.balance_amount) * number_after_prc_change(parseFloat(b.coin_current_price), -parseFloat(b.coin_price_change_24h))), 0)
+    const total_balance_24h_ago = state.balances.reduce((total, b) => total + (parseFloat(b.balance_amount) * number_after_prc_change(parseFloat(b.coin_current_price), -parseFloat(b.coin_price_change_prc_24h))), 0)
+    console.log(total_balance)
+    console.log(total_balance_24h_ago)
     return {
-      "balance_change": total_balance - total_balance_24h_ago,
-      "prc_change": percent_change(total_balance_24h_ago, total_balance)
+      "balance_change": roundNumber(total_balance - total_balance_24h_ago),
+      "prc_change": roundNumber(percent_change(total_balance_24h_ago, total_balance))
     }
   }
-}
-
-function roundNumber(num) {
-  num = parseFloat(num)
-  return Math.round((num + Number.EPSILON) * 100) / 100
-}
-
-function numberWithCommas(x) {
-  return x.toString().replace(/\B(?=(\d{3})+(?!\d))/g, " ");
-}
-
-function percent_of_total(num, total) {
-  return num / total * 100
-}
-
-function percent_change(from, to) {
-  return (to - from) / from * 100
-}
-
-function number_after_prc_change(number, prc_change) {
-  return ((prc_change/100) * number) + number
 }

@@ -19,6 +19,8 @@
           clearable
           hide-details
           hide-selected
+          item-text="name"
+          item-value="code"
           full-width
           label="Search for a coin..."
         >

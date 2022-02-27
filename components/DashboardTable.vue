@@ -55,20 +55,20 @@
     <template #[`item.holdings`]="{ item }">
       <td>
         <div class="d-flex flex-column">
-          <p>
+          <p class="mb-1 mt-2">
             {{
               `${item.balance_current_value} ${currency} (${item.balance_prc_of_total})%`
             }}
           </p>
-          <p>{{ item.balance_amount + ' ' + item.coin_code }}</p>
+          <p class="mb-2">{{ item.balance_amount + ' ' + item.coin_code }}</p>
         </div>
       </td>
     </template>
     <template #[`item.pnl`]="{ item }">
       <td>
         <div class="d-flex flex-column">
-          <p>{{ `${item.balance_pnl} ${currency}` }}</p>
-          <p :class="item.pnl_prc_change < 0 ? 'red--text' : 'green--text'">
+          <p class="mb-1 mt-2">{{ `${item.balance_pnl} ${currency}` }}</p>
+          <p class="mb-2" :class="item.pnl_prc_change < 0 ? 'red--text' : 'green--text'">
             {{ item.pnl_prc_change + '%' }}
           </p>
         </div>
