@@ -17,8 +17,8 @@
 <script>
 export default {
   name: 'LoginPage',
-//   beforeMount() {
-//       this.$auth.loginWith('auth0')
-//   }
+  // beforeMount() {
+  //     this.$auth.loginWith('auth0')
+  // }
 }
 </script>
