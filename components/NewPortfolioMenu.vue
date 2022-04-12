@@ -3,7 +3,9 @@
     <v-card-title>
       <v-icon class="mr-2">mdi-wallet-outline</v-icon
       >{{ selectedPortfolio.name }}
-      <v-icon class="ml-2" v-if="selectedPortfolio.is_main">mdi-star</v-icon></v-card-title
+      <v-icon class="ml-2" v-if="selectedPortfolio.is_main"
+        >mdi-star</v-icon
+      ></v-card-title
     >
     <v-card-actions>
       <v-menu v-model="settingsMenu" :close-on-content-click="false" offset-x>
@@ -16,7 +18,7 @@
         <v-card class="mx-auto" max-width="300">
           <v-card-title>{{ selectedPortfolio.name }}</v-card-title>
           <v-list>
-            <v-list-item-group color="purple">
+            <v-list-item-group color="blue">
               <v-list-item v-if="!selectedPortfolio.is_main" @click="setMain()">
                 <v-list-item-icon class="mr-3">
                   <v-icon> mdi-star </v-icon>
@@ -40,26 +42,32 @@
                   <v-card-title>
                     <span class="text-h5">Edit portfolio's name</span>
                   </v-card-title>
-
                   <v-card-text>
-                    <v-container>
-                      <v-row>
-                        <v-col cols="12">
-                          <v-text-field
-                            v-model="editName"
-                            label="Name"
-                          ></v-text-field>
-                        </v-col>
-                      </v-row>
-                    </v-container>
+                    <v-form v-model="editPortfolioValid">
+                      <v-container>
+                        <v-row>
+                          <v-col cols="12">
+                            <v-text-field
+                              v-model="editName"
+                              label="Name"
+                              :rules="nameRules"
+                            ></v-text-field>
+                          </v-col>
+                        </v-row>
+                      </v-container>
+                    </v-form>
                   </v-card-text>
-
                   <v-card-actions>
                     <v-spacer></v-spacer>
                     <v-btn color="blue darken-1" text @click="closeEdit">
                       Cancel
                     </v-btn>
-                    <v-btn color="blue darken-1" text @click="saveEdit">
+                    <v-btn
+                      color="blue darken-1"
+                      text
+                      @click="saveEdit"
+                      :disabled="!editPortfolioValid"
+                    >
                       Save
                     </v-btn>
                   </v-card-actions>
@@ -148,16 +156,19 @@
                 </v-card-title>
 
                 <v-card-text>
-                  <v-container>
-                    <v-row>
-                      <v-col cols="12">
-                        <v-text-field
-                          v-model="createName"
-                          label="Name"
-                        ></v-text-field>
-                      </v-col>
-                    </v-row>
-                  </v-container>
+                  <v-form v-model="newPortfolioValid">
+                    <v-container>
+                      <v-row>
+                        <v-col cols="12">
+                          <v-text-field
+                            v-model="createName"
+                            label="Name"
+                            :rules="nameRules"
+                          ></v-text-field>
+                        </v-col>
+                      </v-row>
+                    </v-container>
+                  </v-form>
                 </v-card-text>
 
                 <v-card-actions>
@@ -165,7 +176,12 @@
                   <v-btn color="blue darken-1" text @click="closeCreate">
                     Cancel
                   </v-btn>
-                  <v-btn color="blue darken-1" text @click="saveCreate">
+                  <v-btn
+                    color="blue darken-1"
+                    text
+                    @click="saveCreate"
+                    :disabled="!newPortfolioValid"
+                  >
                     Save
                   </v-btn>
                 </v-card-actions>
@@ -191,6 +207,9 @@ export default {
     selectedItem: 0,
     createDialog: false,
     createName: '',
+    editPortfolioValid: false,
+    newPortfolioValid: false,
+    nameRules: [(v) => !!v || 'Provide name of portfolio'],
   }),
   methods: {
     closeDelete() {

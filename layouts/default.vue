@@ -50,11 +50,11 @@
         @click.stop="drawer = !drawer"
         class="hidden-sm-and-up"
       />
-      <v-btn text @click="goToDashboard" class="hidden-xs-only" large>
+      <v-btn v-if="$auth.loggedIn" text @click="goToDashboard" class="hidden-xs-only" large>
         <v-icon class="mr-2">mdi-view-dashboard</v-icon>
         Dashboard
       </v-btn>
-      <v-divider class="mx-4" inset vertical></v-divider>
+      <v-divider v-if="$auth.loggedIn" class="mx-4" inset vertical></v-divider>
       <v-spacer />
       <div v-if="$auth.loggedIn" class="d-flex align-center justify-center">
         <p class="mb-0 mr-2">{{ $auth.user.email }}</p>
