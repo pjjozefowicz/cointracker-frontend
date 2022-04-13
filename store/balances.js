@@ -29,6 +29,14 @@ export const mutations = {
 }
 
 export const actions = {
+  checkIfBalanceExists({state}, coin_id) {
+    const balance = state.balances.find(x => x.coin_id === coin_id)
+    if (typeof balance !== 'undefined') {
+      return true
+    } else {
+      return false
+    }
+  },
   async getCoins({ commit }) {
     try {
       const response = await this.$axios.get(

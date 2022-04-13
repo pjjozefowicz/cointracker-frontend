@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div v-if="balance">
     <v-row justify="start" align="center">
       <v-col>
         <v-card class="mx-auto" outlined>
@@ -84,12 +84,21 @@ export default {
   computed: {
     // mix the getters into computed with object spread operator
     ...mapGetters('transactions', ['balance']),
+    ...mapGetters(['initialized']),
   },
   methods: {
+    ...mapActions('balances', ['checkIfBalanceExists']),
     ...mapActions('transactions', ['initTransactionsForBalance']),
   },
-  beforeMount() {
-    this.initTransactionsForBalance(this.$route.params.coinId)
+  async beforeMount() {
+    const exists = await this.checkIfBalanceExists(this.$route.params.coinId)
+    if (!this.initialized) {
+      this.$router.push("/");
+    } else if (!exists) {
+      this.$router.push("/error");
+    } else {
+      this.initTransactionsForBalance(this.$route.params.coinId)
+    }
   },
 }
 </script>
