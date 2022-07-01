@@ -1,5 +1,7 @@
 # cointracker-frontend
 
+Track your crypto assets in cointracker portfolio!
+
 ## Build Setup
 
 ```bash
