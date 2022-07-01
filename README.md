@@ -2,25 +2,6 @@
 
 Track your crypto assets in cointracker portfolio!
 
-Application was written in Nuxt.js. For detailed explanation on how things work, check out the [nuxt documentation](https://nuxtjs.org).
-
-## Build Setup
-
-```bash
-# install dependencies
-$ npm install
-
-# serve with hot reload at localhost:3000
-$ npm run dev
-
-# build for production and launch server
-$ npm run build
-$ npm run start
-
-# generate static project
-$ npm run generate
-```
-
 You can use docker compose to run the whole thing.
 
 1. Run docker-compose up in folder which contains file below
@@ -55,4 +36,23 @@ services:
       - backend
 volumes:
   data:
+```
+
+Application was written in Nuxt.js. For detailed explanation on how things work, check out the [nuxt documentation](https://nuxtjs.org).
+
+## Build Setup
+
+```bash
+# install dependencies
+$ npm install
+
+# serve with hot reload at localhost:3000
+$ npm run dev
+
+# build for production and launch server
+$ npm run build
+$ npm run start
+
+# generate static project
+$ npm run generate
 ```
