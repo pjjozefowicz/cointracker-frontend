@@ -2,6 +2,8 @@
 
 Track your crypto assets in cointracker portfolio!
 
+Application was written in Nuxt.js. For detailed explanation on how things work, check out the [nuxt documentation](https://nuxtjs.org).
+
 ## Build Setup
 
 ```bash
@@ -18,8 +20,6 @@ $ npm run start
 # generate static project
 $ npm run generate
 ```
-
-For detailed explanation on how things work, check out the [documentation](https://nuxtjs.org).
 
 You can use docker compose to run the whole thing.
 
