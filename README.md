@@ -42,7 +42,7 @@ volumes:
 
 Application was written in Nuxt.js. For detailed explanation on how things work, check out the [nuxt documentation](https://nuxtjs.org).
 
-## Build Setup
+# Build Setup
 
 ```bash
 # install dependencies
