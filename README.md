@@ -7,7 +7,9 @@ You can use docker compose to run the whole thing.
 1. Run docker-compose up in folder which contains the file below
 2. Open localhost:3000 in your browser
 
-```docker
+Here is the `docker-compose.yml` that powers the whole setup.
+
+```yaml
 version: "3.8"
 services:
   postgresdb:
