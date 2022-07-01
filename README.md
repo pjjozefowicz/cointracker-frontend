@@ -23,7 +23,10 @@ For detailed explanation on how things work, check out the [documentation](https
 
 You can use docker compose to run the whole thing.
 
-```
+1. Run docker-compose up in folder which contains file below
+2. Open localhost:3000 in your browser
+
+```docker
 version: "3.8"
 services:
   postgresdb:
