@@ -1,9 +1,9 @@
 <template>
-  <v-row>
+  <v-row class="mt-12">
     <v-col class="text-center">
-      <img src="/v.png" alt="Vuetify.js" class="mb-5" />
+      <cryptoicon symbol="btc" size="128" class="ml-6"/>
       <blockquote class="blockquote">
-        &#8220;First, solve the problem. Then, write the code.&#8221;
+        &#8220;In order to use this app, u need to login bro.&#8221;
         <footer>
           <small>
             <em>&mdash;John Johnson</em>
@@ -16,6 +16,9 @@
 
 <script>
 export default {
-  name: 'InspirePage',
+  name: 'LoginPage',
+  // beforeMount() {
+  //     this.$auth.loginWith('auth0')
+  // }
 }
 </script>

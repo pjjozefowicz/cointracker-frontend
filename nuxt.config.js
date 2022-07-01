@@ -2,6 +2,7 @@ import colors from 'vuetify/es5/util/colors'
 
 export default {
   // Global page headers: https://go.nuxtjs.dev/config-head
+  ssr: false,
   head: {
     titleTemplate: '%s - cointracker-frontend',
     title: 'cointracker-frontend',
@@ -21,7 +22,7 @@ export default {
   css: [],
 
   // Plugins to run before rendering page: https://go.nuxtjs.dev/config-plugins
-  plugins: [],
+  plugins: [{ src: '~/plugins/vue-cryptocoin.js', mode: 'client' }],
 
   // Auto import components: https://go.nuxtjs.dev/config-components
   components: true,
@@ -38,13 +39,26 @@ export default {
   modules: [
     // https://go.nuxtjs.dev/axios
     '@nuxtjs/axios',
-    '@nuxtjs/auth-next'
+    '@nuxtjs/auth-next',
   ],
 
   // Axios module configuration: https://go.nuxtjs.dev/config-axios
   axios: {
     // Workaround to avoid enforcing hard-coded localhost:3000: https://github.com/nuxt-community/axios-module/issues/308
-    baseURL: '/',
+    baseURL: 'http://localhost:8085',
+    progress: true,
+    // withCredentials: true
+  },
+
+  loading: {
+    color: 'purple',
+    height: '3px'
+  },
+
+  loadingIndicator: {
+    name: 'circle',
+    color: '#3B8070',
+    background: 'white'
   },
 
   // Vuetify module configuration: https://go.nuxtjs.dev/config-vuetify
@@ -54,7 +68,7 @@ export default {
       dark: true,
       themes: {
         dark: {
-          primary: colors.blue.darken2,
+          primary: colors.blue.lighten1,
           accent: colors.grey.darken3,
           secondary: colors.amber.darken3,
           info: colors.teal.lighten1,
@@ -67,7 +81,14 @@ export default {
   },
 
   // Build Configuration: https://go.nuxtjs.dev/config-build
-  build: {},
+  build: {
+    transpile: ['vue-cryptocoin'],
+    extend(config, ctx) {
+      if (ctx.isDev) {
+        config.devtool = ctx.isClient ? 'source-map' : 'inline-source-map'
+      }
+    },
+  },
 
   auth: {
     strategies: {
@@ -77,13 +98,12 @@ export default {
         audience: 'https://cointracker.eu.auth0.com/api/v2/',
         logoutRedirectUri: 'http://localhost:3000',
         callback: 'http://localhost:3000',
-        home: '/'
-      }
-    }
+        home: '/',
+      },
+    },
   },
 
   router: {
-    middleware: ['auth']
-  }
-  
+    middleware: ['auth'],
+  },
 }
