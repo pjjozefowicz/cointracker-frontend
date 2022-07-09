@@ -82,7 +82,7 @@ export const actions = {
 
 export const getters = {
   coins(state) {
-    return state.coins
+    return state.coins.filter(coin => !state.balances.find(b => (b.coin_id === coin.coin_id)))
   },
   balances(state, getters) {
     return state.balances.map(b => {
